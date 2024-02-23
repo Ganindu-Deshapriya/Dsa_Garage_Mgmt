@@ -33,6 +33,7 @@ public class DSAGarageMgmt {
             System.out.println("1. Park a vehicle (Ex input : a ABC1234) ");
             System.out.println("2. Depart a vehicle (Ex input : d ABC1234) ");
             System.out.println("3. Type exit to exit the program");
+            System.out.println("4. Type \"print\" to exit the program");
 
             String entry = scanner.nextLine();
             if (entry.equals("exit")) {
@@ -40,7 +41,7 @@ public class DSAGarageMgmt {
                 break;
             }
 
-            if (entry.equals("p")) {
+            if (entry.equals("print")) {
                 System.out.println("Garage queue");
                 System.out.println(garageActions.printgarage());
                 System.out.println("Waiting Queue");
