@@ -4,6 +4,8 @@
  */
 package dsagaragemgmt;
 
+import java.util.Objects;
+
 /**
  *
  * @author Ganindudesh
@@ -11,10 +13,12 @@ package dsagaragemgmt;
 public class car {
     char action;
     String numberPlate;
+    int moveCount;
 
-    public car(char action, String numberPlate) {
+    public car(String numberPlate) {
         this.action = action;
         this.numberPlate = numberPlate;
+        this.moveCount = 0;
     }
 
     public char getAction() {
@@ -26,6 +30,17 @@ public class car {
     }
     
     
+    public void moveIncrementer(int incrementNum){
+        this.moveCount = moveCount+incrementNum;
+    }
+
+    public int getMoveCount() {
+        return moveCount;
+    }
+
+    public void setMoveCount(int moveCount) {
+        this.moveCount = moveCount;
+    }
     
-    
+
 }

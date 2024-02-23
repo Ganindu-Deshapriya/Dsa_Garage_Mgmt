@@ -6,6 +6,7 @@ package dsagaragemgmt;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 /**
  *
@@ -17,59 +18,56 @@ public class DSAGarageMgmt {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        garageActions garageActions = new garageActions();
         Queue<String> garageQueue = new LinkedList<>();
         Queue<String> waitingQueue = new LinkedList<>();
+        Queue<String> tempQueue = new LinkedList<>();
+        boolean running = true;
+        Scanner scanner = new Scanner(System.in);
+        String action, numberplate;
 
-        String input = "a A, a B, a C, a D, a E, a F, a G, a H, a I, a J, a K, a L, a M, a N, d A, d C, d F, d x, d E, d K";
-        String[] steps = input.split(", ");
+        while (running) {
+            System.out.println("----------------------------------------------------");
+            System.out.println("            Laughs parking garage System");
+            System.out.println("----------------------------------------------------");
+            System.out.println("1. Park a vehicle (Ex input : a ABC1234) ");
+            System.out.println("2. Depart a vehicle (Ex input : d ABC1234) ");
+            System.out.println("3. Type exit to exit the program");
 
-        for (String step : steps) {
-            int movecount = 0;
-            String numberPlate = step.substring(2);
-            char action = step.charAt(0);
-            car car = new car(action, numberPlate);
+            String entry = scanner.nextLine();
+            if (entry.equals("exit")) {
+                running = false;
+                break;
+            }
 
-            if (car.action == 'a') {
-                if (garageQueue.size() < 10) {
-                    garageQueue.add(car.numberPlate);
-                    System.out.println("Car with license plate " + car.numberPlate + " arrived. Garage has space.");
-                } else {
-                    waitingQueue.add(car.numberPlate);
-                    System.out.println("Car with license plate " + car.numberPlate + " arrived. No space available. Waiting for space");
+            if (entry.equals("p")) {
+                System.out.println("Garage queue");
+                System.out.println(garageActions.printgarage());
+                System.out.println("Waiting Queue");
+                System.out.println(garageActions.printWaitingLine());
+                
+            } else {
+
+                String[] elements = entry.split(" ", 2);
+                
+                if (elements.length < 2) {
+                System.out.println("Invalid input. try again");
+                continue; 
+            }
+                action = elements[0];
+                numberplate = elements[1];
+
+                switch (action) {
+                    case "a":
+                        garageActions.arrival(numberplate);
+                        break;
+                    case "d":
+                        garageActions.departure(numberplate);
+                        break;
+                    default:
+                        throw new AssertionError();
                 }
-
-            } else if (car.action == 'd') {
-                Queue<String> updatedQueue = new LinkedList<>();
-                System.out.println(garageQueue);
-                if (garageQueue.contains(car.numberPlate)) {
-                    String topcar = garageQueue.peek();
-                    while (!garageQueue.peek().equals(car.numberPlate)) {
-                        updatedQueue.add(garageQueue.poll());
-                        movecount++;
-                    }
-                    garageQueue.poll();
-                    movecount++;
-                    while (!garageQueue.isEmpty()) {
-                        updatedQueue.add(garageQueue.poll());
-                    }
-
-                    System.out.println("Car with license plate " + car.numberPlate + " departed. Moved " + movecount + " times.");
-                    garageQueue = updatedQueue;
-//                    System.out.println(garageQueue);
-
-                    while (!waitingQueue.isEmpty() && garageQueue.size() < 10) {
-                        garageQueue.add(waitingQueue.poll());
-                    }
-                } else if (waitingQueue.contains(car.numberPlate)) {
-                    System.out.println("Car with license plate " + car.numberPlate + " departed from the waiting queue. Moved " + movecount + " times.");
-                } else {
-                    System.out.println("\ncar with numberplate " + car.numberPlate + " does not exist!\n");
-                }
-
             }
         }
-
     }
-    // TODO code application logic here
-
 }
